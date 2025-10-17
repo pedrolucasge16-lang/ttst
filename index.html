@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petiscaria Shefia's BAR</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Interface Principal -->
+    <div id="mainInterface">
+        <header>
+            <div class="header-container">
+                <div class="logo">
+                    <div class="logo-icon">🍻</div>
+                    <h1>Petiscaria <span>Shefia's BAR</span></h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#" onclick="showSection('home')">Início</a></li>
+                        <li><a href="#" onclick="showSection('menu')">Cardápio</a></li>
+                        <li><a href="#" onclick="showSection('reservation')">Reservas</a></li>
+                        <li><a href="#" onclick="showSection('careers')">Trabalhe Conosco</a></li>
+                    </ul>
+                </nav>
+                <div class="user-actions">
+                    <button class="btn btn-secondary" id="loginBtn" onclick="showSection('loginSection')">Login Admin</button>
+                    <button class="btn btn-primary" id="cartBtn" onclick="showCartInterface()">Carrinho (<span id="cartCount">0</span>)</button>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <section id="home" class="hero">
+                <div class="container">
+                    <h2>Bem-vindo à Petiscaria Shefia's BAR</h2>
+                    <p>O melhor lugar para petiscos, cervejas geladas e momentos inesquecíveis com amigos e família.</p>
+                    <button class="btn btn-primary" onclick="showSection('menu')">Ver Cardápio</button>
+                </div>
+            </section>
+
+            <section id="menu" class="container hidden">
+                <h2 class="section-title">Nosso Cardápio</h2>
+                <div class="menu-grid" id="menuGrid">
+                    <!-- Menu items will be loaded here dynamically -->
+                </div>
+                
+                <div class="kids-section">
+                    <div class="kids-icon">👶</div>
+                    <h3>Espaço Kids</h3>
+                    <p>Temos um espaço especial para as crianças com brinquedos e atividades supervisionadas!</p>
+                </div>
+            </section>
+
+            <section id="reservation" class="container hidden">
+                <h2 class="section-title">Reserve sua Mesa</h2>
+                <div class="reservation-form">
+                    <div class="form-group">
+                        <label for="reservationName">Nome</label>
+                        <input type="text" id="reservationName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reservationPhone">Telefone</label>
+                        <input type="tel" id="reservationPhone" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reservationDate">Data</label>
+                        <input type="date" id="reservationDate" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reservationTime">Horário</label>
+                        <input type="time" id="reservationTime" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reservationGuests">Número de Pessoas</label>
+                        <input type="number" id="reservationGuests" class="form-control" min="1" required>
+                    </div>
+                    <button class="btn btn-primary" onclick="makeReservation()">Fazer Reserva</button>
+                </div>
+            </section>
+
+            <section id="cartInterface" class="container hidden">
+                <h2 class="section-title">Finalizar Pedido</h2>
+                <div class="cart-interface">
+                    <div class="cart" id="deliveryCart">
+                        <h3>Itens do Pedido</h3>
+                        <div id="cartItems">
+                            <!-- Cart items will be displayed here -->
+                        </div>
+                        <div class="cart-total">
+                            Total: R$ <span id="cartTotal">0.00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="accompaniments-section">
+                        <h3>Acompanhamentos para Pratos Salgados</h3>
+                        <div class="accompaniments-grid" id="savoryAccompaniments">
+                            <!-- Savory accompaniments will be displayed here -->
+                        </div>
+                    </div>
+                    
+                    <div class="accompaniments-section">
+                        <h3>Acompanhamentos para Pratos Doces</h3>
+                        <div class="accompaniments-grid" id="sweetAccompaniments">
+                            <!-- Sweet accompaniments will be displayed here -->
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="proceedToCheckout()">Finalizar Pedido</button>
+                </div>
+            </section>
+
+            <section id="careers" class="container hidden">
+                <h2 class="section-title">Trabalhe Conosco</h2>
+                <div class="careers-grid" id="careersGrid">
+                    <!-- Career opportunities will be loaded here dynamically -->
+                </div>
+            </section>
+
+            <section id="checkout" class="container hidden">
+                <h2 class="section-title">Finalizar Pedido</h2>
+                <div class="checkout-form">
+                    <div class="form-group">
+                        <label for="customerName">Nome Completo</label>
+                        <input type="text" id="customerName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customerAddress">Endereço de Entrega</label>
+                        <input type="text" id="customerAddress" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customerPhone">Telefone</label>
+                        <input type="tel" id="customerPhone" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="paymentMethod">Forma de Pagamento</label>
+                        <select id="paymentMethod" class="form-control" required>
+                            <option value="">Selecione...</option>
+                            <option value="credit">Cartão de Crédito</option>
+                            <option value="debit">Cartão de Débito</option>
+                            <option value="pix">PIX</option>
+                            <option value="cash">Dinheiro</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" onclick="processPayment()">Finalizar Pagamento</button>
+                </div>
+            </section>
+
+            <section id="loginSection" class="container hidden">
+                <h2 class="section-title">Login Administrativo</h2>
+                <div class="login-form">
+                    <div class="form-group">
+                        <label for="adminUsername">Usuário</label>
+                        <input type="text" id="adminUsername" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="adminPassword">Senha</label>
+                        <input type="password" id="adminPassword" class="form-control" required>
+                    </div>
+                    <button class="btn btn-primary" onclick="loginAdmin()">Entrar</button>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                <div class="logo">
+                    <div class="logo-icon">🍻</div>
+                    <h2>Petiscaria <span>Shefia's BAR</span></h2>
+                </div>
+                <p>Rua dos Petiscos, 123 - Centro, Cidade - Estado</p>
+                <p>Telefone: (11) 1234-5678</p>
+                <p>Horário de Funcionamento: Segunda a Sábado, 17h às 23h | Domingo, 17h às 22h</p>
+                <div class="social-links">
+                    <a href="#">📘</a>
+                    <a href="#">📷</a>
+                    <a href="#">🐦</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Interface Administrativa -->
+    <div id="adminInterface" class="hidden">
+        <div class="admin-header">
+            <div class="admin-header-container">
+                <div class="logo">
+                    <div class="logo-icon">🍻</div>
+                    <h1>Painel Admin - <span>Shefia's BAR</span></h1>
+                </div>
+                <div class="admin-nav">
+                    <button class="active" onclick="showAdminSection('ordersPanel')">Pedidos</button>
+                    <button onclick="showAdminSection('reservationsPanel')">Reservas</button>
+                    <button class="btn btn-secondary" onclick="logoutAdmin()">Sair</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="admin-panel">
+            <div id="ordersPanel">
+                <h2 class="section-title">Pedidos de Delivery</h2>
+                
+                <div class="order-section">
+                    <h3>Pedidos Pendentes</h3>
+                    <div id="pendingOrders" class="orders-grid">
+                        <!-- Pending orders will be displayed here -->
+                    </div>
+                </div>
+                
+                <div class="order-section">
+                    <h3>Pedidos Confirmados</h3>
+                    <div id="confirmedOrders" class="orders-grid">
+                        <!-- Confirmed orders will be displayed here -->
+                    </div>
+                </div>
+                
+                <div class="order-section">
+                    <h3>Pedidos Entregues</h3>
+                    <div id="deliveredOrders" class="orders-grid">
+                        <!-- Delivered orders will be displayed here -->
+                    </div>
+                </div>
+            </div>
+            
+            <div id="reservationsPanel" class="hidden">
+                <h2 class="section-title">Reservas</h2>
+                
+                <div class="reservation-section">
+                    <h3>Reservas Pendentes</h3>
+                    <div id="pendingReservations" class="reservations-grid">
+                        <!-- Pending reservations will be displayed here -->
+                    </div>
+                </div>
+                
+                <div class="reservation-section">
+                    <h3>Reservas Confirmadas</h3>
+                    <div id="confirmedReservations" class="reservations-grid">
+                        <!-- Confirmed reservations will be displayed here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
